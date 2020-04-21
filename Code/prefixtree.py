@@ -35,15 +35,37 @@ class PrefixTree:
 
     def is_empty(self):
         """Return True if this prefix tree is empty (contains no strings)."""
-        # TODO
+        return self.size == 0
 
     def contains(self, string):
         """Return True if this prefix tree contains the given string."""
-        # TODO
+        for char in string:
+            # If the node has a child, traverse to it
+            if node.has_child(char):
+                child_node = node.get_child(char)
+                node = child_node
+            else:
+                # If no more children are available, check to see if the node is terminal
+                return node.is_terminal()
 
     def insert(self, string):
         """Insert the given string into this prefix tree."""
-        # TODO
+        # Create the root
+        node = self.root
+        
+        for char in string:
+            if node.has_child(char):
+                node = node.get_child(char)
+            else:
+                # Otherwise, create the node we want and append to it
+                new_node = PrefixTreeNode(char)
+                node.add_child(char, new_node)
+                node = new_node
+                
+        # Increase the size accordingly and set the node to terminal if it is not already
+        if node.is_terminal() == False:
+            self.size += 1
+            node.terminal = True
 
     def _find_node(self, string):
         """Return a pair containing the deepest node in this prefix tree that
@@ -55,7 +77,7 @@ class PrefixTree:
             return self.root, 0
         # Start with the root node
         node = self.root
-        # TODO
+        
 
     def complete(self, prefix):
         """Return a list of all strings stored in this prefix tree that start
