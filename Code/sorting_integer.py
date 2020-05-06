@@ -1,5 +1,5 @@
 #!python
-
+from collections import deque
 
 def counting_sort(numbers):
     """Sort given numbers (integers) by counting occurrences of each number,
@@ -32,16 +32,30 @@ def counting_sort(numbers):
 def bucket_sort(numbers, num_buckets=10):
     """Sort given numbers by distributing into buckets representing subranges,
     then sorting each bucket and concatenating all buckets in sorted order.
-    TODO: Running time: ??? Why and under what conditions?
-    TODO: Memory usage: ??? Why and under what conditions?"""
-    # TODO: Find range of given numbers (minimum and maximum values)
-    # TODO: Create list of buckets to store numbers in subranges of input range
-    # TODO: Loop over given numbers and place each item in appropriate bucket
-    # TODO: Sort each bucket using any sorting algorithm (recursive or another)
-    # TODO: Loop over buckets and append each bucket's numbers into output list
-    # FIXME: Improve this to mutate input instead of creating new output list
-    num_range = max(numbers) - min(numbers)
+    Running time: Average time is O(n + k) where n is the items and k is number of buckets
+    Memory usage: O(n * k) because we have to allocate a full list for every bucket"""
     
+    # Edge case: len of numbers if 1
+    if len(numbers) <= 1:
+        return
+    
+    # Set the max and min values
+    max_val, min_val = min(numbers), min(numbers)
+    
+    # Base Case: All the numbers are the same
+    if max_val == min_val:
+        return
+    
+    # Create a list with placeholders for the length of numbers
+    buckets = [0] * num_buckets
+    for num in numbers:
+        if buckets[(num * max_val) % num_buckets] == 0:
+            bucket = deque()
+            bucket.append(num)
+            # print(bucket)
+            buckets[(num * max_val) % num_buckets] = bucket
+        
+            
 
 if __name__ == "__main__":
     nums = [2, 6, 19, 2, 20, 20, 5, 11, 1, 16]
